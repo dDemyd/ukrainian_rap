@@ -11,6 +11,24 @@
   const { TIERS, ARTISTS, getYouTubeMusicSearchUrl } = RAP_DATA;
   const STORAGE_KEY = 'ukr_rap_iceberg_notes_v4';
 
+  function escapeHTML(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // 1 артист, 2 артисти, 5 артистів, 21 артист...
+  function pluralArtists(n) {
+    const mod10 = n % 10;
+    const mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return `${n} артист`;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} артисти`;
+    return `${n} артистів`;
+  }
+
   function getInitials(name) {
     if (!name) return 'UA';
     const clean = name.replace(/[«»"'()]/g, '').trim();
@@ -87,6 +105,7 @@
       this.filterTierGroup = document.getElementById('filter-tier-group');
       this.viewIcebergBtn = document.getElementById('view-iceberg-btn');
       this.viewGridBtn = document.getElementById('view-grid-btn');
+      this.btnResetFilters = document.getElementById('btn-reset-filters');
 
       // Bulk Notes Panel
       this.notesSection = document.getElementById('notes-import-section');
@@ -149,19 +168,14 @@
       this.filterTierGroup.addEventListener('click', (e) => {
         const btn = e.target.closest('.filter-pill');
         if (!btn) return;
-        this.filterTierGroup.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentTierFilter = btn.dataset.tier;
-        this.applyFilters();
-
-        // Smooth scroll active pill into view
-        const pillOffset = btn.offsetLeft - (this.filterTierGroup.clientWidth / 2) + (btn.clientWidth / 2);
-        this.filterTierGroup.scrollTo({ left: pillOffset, behavior: 'smooth' });
+        this.setTierFilter(btn.dataset.tier);
       });
 
-      // Enable horizontal scroll on mouse wheel for desktop/mobile testing
+      // Map vertical wheel to horizontal scroll only when the pills actually overflow,
+      // otherwise the page itself must keep scrolling
       this.filterTierGroup.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0 && !e.deltaX) {
+        const overflows = this.filterTierGroup.scrollWidth > this.filterTierGroup.clientWidth;
+        if (overflows && e.deltaY !== 0 && !e.deltaX) {
           this.filterTierGroup.scrollLeft += e.deltaY;
           e.preventDefault();
         }
@@ -188,18 +202,28 @@
         }
       });
 
-      // Bulk Notes Panel Toggle
-      this.btnToggleNotes.addEventListener('click', () => {
-        const isHidden = this.notesSection.style.display === 'none' || !this.notesSection.style.display;
-        this.notesSection.style.display = isHidden ? 'block' : 'none';
-        if (isHidden) {
-          this.rawNotesInput.focus();
+      // Cards are focusable: open with Enter / Space
+      this.cardsView.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.artist-card');
+        if (card && e.target === card) {
+          e.preventDefault();
+          this.openArtistModal(card.dataset.id);
         }
       });
 
-      this.btnCloseNotes.addEventListener('click', () => {
-        this.notesSection.style.display = 'none';
+      this.btnResetFilters.addEventListener('click', () => {
+        this.searchInput.value = '';
+        this.searchQuery = '';
+        this.setTierFilter('all');
       });
+
+      // Bulk Notes Panel Toggle
+      this.btnToggleNotes.addEventListener('click', () => {
+        this.setNotesPanelOpen(this.notesSection.hidden);
+      });
+
+      this.btnCloseNotes.addEventListener('click', () => this.setNotesPanelOpen(false));
 
       this.btnSaveNotes.addEventListener('click', () => this.parseAndImportNotes());
 
@@ -235,6 +259,33 @@
           }
         }
       });
+    }
+
+    setNotesPanelOpen(isOpen) {
+      this.notesSection.hidden = !isOpen;
+      this.btnToggleNotes.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        this.rawNotesInput.focus();
+      }
+    }
+
+    setTierFilter(tier) {
+      this.currentTierFilter = tier;
+      let activeBtn = null;
+      this.filterTierGroup.querySelectorAll('.filter-pill').forEach(b => {
+        const isActive = b.dataset.tier === tier;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-pressed', String(isActive));
+        if (isActive) activeBtn = b;
+      });
+      this.applyFilters();
+
+      // Keep the active pill visible when the row is horizontally scrollable
+      const group = this.filterTierGroup;
+      if (activeBtn && group.scrollWidth > group.clientWidth) {
+        const pillOffset = activeBtn.offsetLeft - (group.clientWidth / 2) + (activeBtn.clientWidth / 2);
+        group.scrollTo({ left: pillOffset, behavior: 'smooth' });
+      }
     }
 
     openDialog(dialogEl) {
@@ -277,32 +328,40 @@
 
     switchView(mode) {
       this.currentView = mode;
-      if (mode === 'iceberg') {
-        this.viewIcebergBtn.classList.add('active');
-        this.viewGridBtn.classList.remove('active');
-        this.icebergView.style.display = 'flex';
-        this.cardsView.style.display = 'none';
-      } else {
-        this.viewGridBtn.classList.add('active');
-        this.viewIcebergBtn.classList.remove('active');
-        this.icebergView.style.display = 'none';
-        this.cardsView.style.display = 'grid';
-      }
+      const isIceberg = mode === 'iceberg';
+      this.viewIcebergBtn.classList.toggle('active', isIceberg);
+      this.viewGridBtn.classList.toggle('active', !isIceberg);
+      this.viewIcebergBtn.setAttribute('aria-pressed', String(isIceberg));
+      this.viewGridBtn.setAttribute('aria-pressed', String(!isIceberg));
+      this.icebergView.style.display = isIceberg ? 'flex' : 'none';
+      this.cardsView.style.display = isIceberg ? 'none' : 'grid';
       this.renderFilteredView();
     }
 
-    applyFilters() {
-      this.filteredArtists = this.artists.filter(artist => {
-        const matchesTier = this.currentTierFilter === 'all' || artist.tier.toString() === this.currentTierFilter;
-        if (!matchesTier) return false;
+    matchesSearch(artist) {
+      if (!this.searchQuery) return true;
+      const nameMatch = artist.name.toLowerCase().includes(this.searchQuery);
+      const impressionMatch = (artist.impression || '').toLowerCase().includes(this.searchQuery);
+      const verdictMatch = (artist.verdict || '').toLowerCase().includes(this.searchQuery);
+      const tracksMatch = (artist.tracks || []).some(t => t.toLowerCase().includes(this.searchQuery));
+      const bonusMatch = (artist.bonusTracks || []).some(t => t.toLowerCase().includes(this.searchQuery));
+      return nameMatch || impressionMatch || verdictMatch || tracksMatch || bonusMatch;
+    }
 
-        if (!this.searchQuery) return true;
-        const nameMatch = artist.name.toLowerCase().includes(this.searchQuery);
-        const impressionMatch = (artist.impression || '').toLowerCase().includes(this.searchQuery);
-        const verdictMatch = (artist.verdict || '').toLowerCase().includes(this.searchQuery);
-        const tracksMatch = (artist.tracks || []).some(t => t.toLowerCase().includes(this.searchQuery));
-        const bonusMatch = (artist.bonusTracks || []).some(t => t.toLowerCase().includes(this.searchQuery));
-        return nameMatch || impressionMatch || verdictMatch || tracksMatch || bonusMatch;
+    applyFilters() {
+      const searchMatches = this.artists.filter(artist => this.matchesSearch(artist));
+      this.filteredArtists = searchMatches.filter(artist =>
+        this.currentTierFilter === 'all' || artist.tier.toString() === this.currentTierFilter
+      );
+
+      // Pill counts reflect the current search query
+      this.filterTierGroup.querySelectorAll('.filter-pill').forEach(pill => {
+        const countEl = pill.querySelector('.pill-count');
+        if (!countEl) return;
+        const tier = pill.dataset.tier;
+        countEl.textContent = tier === 'all'
+          ? searchMatches.length
+          : searchMatches.filter(a => a.tier.toString() === tier).length;
       });
 
       this.renderFilteredView();
@@ -330,7 +389,7 @@
 
     renderFilteredView() {
       const hasResults = this.filteredArtists.length > 0;
-      this.noResults.style.display = hasResults ? 'none' : 'block';
+      this.noResults.hidden = hasResults;
 
       if (this.currentView === 'iceberg') {
         this.renderIcebergView();
@@ -345,25 +404,21 @@
       const tier2 = this.filteredArtists.filter(a => a.tier === 2);
       const tier3 = this.filteredArtists.filter(a => a.tier === 3);
 
-      const secTier0 = document.getElementById('section-tier-0');
-      const secTier1 = document.getElementById('section-tier-1');
-      const secTier2 = document.getElementById('section-tier-2');
-      const secTier3 = document.getElementById('section-tier-3');
+      const tiers = [tier0, tier1, tier2, tier3];
+      const visible = tiers.map((list, idx) => {
+        const isVisible = (this.currentTierFilter === 'all' || this.currentTierFilter === String(idx)) && list.length > 0;
+        const section = document.getElementById(`section-tier-${idx}`);
+        if (section) section.style.display = isVisible ? 'block' : 'none';
+        const counter = document.getElementById(`count-tier-${idx}`);
+        if (counter) counter.textContent = pluralArtists(list.length);
+        return isVisible;
+      });
 
-      if (secTier0) secTier0.style.display = (this.currentTierFilter === 'all' || this.currentTierFilter === '0') && tier0.length > 0 ? 'block' : 'none';
-      if (secTier1) secTier1.style.display = (this.currentTierFilter === 'all' || this.currentTierFilter === '1') && tier1.length > 0 ? 'block' : 'none';
-      if (secTier2) secTier2.style.display = (this.currentTierFilter === 'all' || this.currentTierFilter === '2') && tier2.length > 0 ? 'block' : 'none';
-      if (secTier3) secTier3.style.display = (this.currentTierFilter === 'all' || this.currentTierFilter === '3') && tier3.length > 0 ? 'block' : 'none';
-
-      const cnt0 = document.getElementById('count-tier-0');
-      const cnt1 = document.getElementById('count-tier-1');
-      const cnt2 = document.getElementById('count-tier-2');
-      const cnt3 = document.getElementById('count-tier-3');
-
-      if (cnt0) cnt0.textContent = `${tier0.length} артистів`;
-      if (cnt1) cnt1.textContent = `${tier1.length} артистів`;
-      if (cnt2) cnt2.textContent = `${tier2.length} артистів`;
-      if (cnt3) cnt3.textContent = `${tier3.length} артистів`;
+      // A depth separator only makes sense between two visible neighbouring tiers
+      this.icebergView.querySelectorAll('.depth-separator').forEach(sep => {
+        const [above, below] = sep.dataset.between.split('-').map(Number);
+        sep.style.display = visible[above] && visible[below] ? 'flex' : 'none';
+      });
 
       if (this.cloudTier0) this.cloudTier0.innerHTML = tier0.map(a => this.createArtistTagHTML(a)).join('');
       if (this.cloudTier1) this.cloudTier1.innerHTML = tier1.map(a => this.createArtistTagHTML(a)).join('');
@@ -372,13 +427,12 @@
     }
 
     createArtistTagHTML(artist) {
-      const hasNotes = artist.impression && artist.impression.trim().length > 0;
       const hasImg = Boolean(artist.image && artist.image.trim().length > 5);
+      const name = escapeHTML(artist.name);
       return `
-        <button type="button" class="artist-tag tier-${artist.tier}" data-id="${artist.id}" title="${artist.name}${hasNotes ? ' (є замітки)' : ''}">
-          ${hasImg ? `<img src="${artist.image}" alt="" class="tag-avatar" loading="lazy" onerror="this.style.display='none'">` : ''}
-          <span>${artist.name}</span>
-          ${hasNotes ? '<span class="has-notes-indicator" title="Є замітки"></span>' : ''}
+        <button type="button" class="artist-tag tier-${artist.tier}" data-id="${escapeHTML(artist.id)}">
+          ${hasImg ? `<img src="${escapeHTML(artist.image)}" alt="" class="tag-avatar" loading="lazy" onerror="this.remove()">` : ''}
+          <span class="artist-tag-name">${name}</span>
         </button>
       `;
     }
@@ -387,61 +441,41 @@
       this.cardsView.innerHTML = this.filteredArtists.map(artist => {
         const tierConfig = TIERS[artist.tier] || { badge: 'Рівень ' + artist.tier };
         const hasNotes = artist.impression && artist.impression.trim().length > 0;
-        const initials = getInitials(artist.name);
+        const initials = escapeHTML(getInitials(artist.name));
         const hasImage = Boolean(artist.image);
-        
-        const tracksHTML = (artist.tracks && artist.tracks.length > 0)
-          ? artist.tracks.map((t, idx) => `
-              <div class="track-preview-item">
-                <span class="track-number">0${idx + 1}</span>
-                <span>${t}</span>
-              </div>
-            `).join('')
-          : `
-            <div class="track-preview-item">
-              <span class="track-number">#</span>
-              <span class="card-empty-note">3 топ-треки з YouTube Music</span>
-            </div>
-          `;
+        const name = escapeHTML(artist.name);
+        const fallback = `<div class="card-avatar-fallback"${hasImage ? ' style="display: none;"' : ''}><div class="vinyl-center-badge"><span class="fallback-initials">${initials}</span></div></div>`;
+
+        const tracksText = (artist.tracks && artist.tracks.length > 0)
+          ? artist.tracks.map(escapeHTML).join(' · ')
+          : '3 топ-треки з YouTube Music';
 
         const impressionHTML = hasNotes
-          ? `<div class="card-impression-snippet">“${artist.impression}”</div>`
-          : `<div class="card-empty-note">Натисніть для перегляду та додавання вражень</div>`;
+          ? `<p class="card-impression">${escapeHTML(artist.impression)}</p>`
+          : `<p class="card-empty-note">Натисніть, щоб переглянути та додати враження</p>`;
 
         return `
-          <div class="artist-card" data-id="${artist.id}">
-            <div>
-              <div class="card-cover-container">
-                ${hasImage ? `
-                  <img src="${artist.image}" 
-                       alt="${artist.name}" 
-                       class="card-cover-img" 
-                       loading="lazy" 
-                       onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
-                  <div class="card-avatar-fallback" style="display: none;">
-                    <div class="vinyl-center-badge"><span class="fallback-initials">${initials}</span></div>
-                  </div>
-                ` : `
-                  <div class="card-avatar-fallback">
-                    <div class="vinyl-center-badge"><span class="fallback-initials">${initials}</span></div>
-                  </div>
-                `}
-                <span class="card-tier-badge badge-tier-${artist.tier} card-cover-badge">${tierConfig.badge}</span>
-              </div>
-
-              <div class="card-top">
-                <h3 class="card-name">${artist.name}</h3>
-              </div>
-              <div class="card-tracks-preview">${tracksHTML}</div>
-              ${impressionHTML}
+          <article class="artist-card tier-${artist.tier}" data-id="${escapeHTML(artist.id)}" tabindex="0" role="button" aria-label="${name} — відкрити відгук">
+            <div class="card-cover-container">
+              ${hasImage ? `<img src="${escapeHTML(artist.image)}" alt="" class="card-cover-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+              ${fallback}
+            </div>
+            <div class="card-head">
+              <span class="card-tier-badge">${escapeHTML(tierConfig.badge)}</span>
+              <h3 class="card-name">${name}</h3>
+            </div>
+            ${impressionHTML}
+            <div class="card-tracks">
+              <span class="card-tracks-icon" aria-hidden="true">🎧</span>
+              <span class="card-tracks-list">${tracksText}</span>
             </div>
             <div class="card-footer">
-              <span class="verdict-tag">${artist.verdict || (hasNotes ? 'Прослухано' : 'В черзі')}</span>
-              <a href="${getYouTubeMusicSearchUrl(artist.name)}" target="_blank" rel="noopener noreferrer" class="yt-link-btn" title="Слухати на YouTube Music">
-                <span>▶ YT Music</span>
+              <span class="verdict-tag">${escapeHTML(artist.verdict || (hasNotes ? 'Прослухано' : 'В черзі'))}</span>
+              <a href="${getYouTubeMusicSearchUrl(artist.name)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-yt" aria-label="Слухати ${name} на YouTube Music">
+                <span aria-hidden="true">▶</span> Слухати
               </a>
             </div>
-          </div>
+          </article>
         `;
       }).join('');
     }
@@ -468,12 +502,16 @@
       if (this.isEditingModal) {
         this.modalViewMode.style.display = 'none';
         this.modalEditMode.style.display = 'block';
-        this.modalEditBtn.textContent = '👁️ Перегляд';
+        this.modalEditBtn.textContent = '👁️';
+        this.modalEditBtn.setAttribute('aria-label', 'Перегляд');
+        this.modalEditBtn.title = 'Повернутися до перегляду';
         this.populateEditForm();
       } else {
-        this.modalViewMode.style.display = 'block';
+        this.modalViewMode.style.display = '';
         this.modalEditMode.style.display = 'none';
-        this.modalEditBtn.textContent = '✏️ Редагувати';
+        this.modalEditBtn.textContent = '✏️';
+        this.modalEditBtn.setAttribute('aria-label', 'Редагувати');
+        this.modalEditBtn.title = 'Редагувати треки та враження';
       }
     }
 
@@ -486,7 +524,12 @@
       this.editTrack2.value = (artist.tracks && artist.tracks[1]) || '';
       this.editTrack3.value = (artist.tracks && artist.tracks[2]) || '';
       this.editTracksBonus.value = (artist.bonusTracks && artist.bonusTracks.join(', ')) || '';
-      this.editVerdict.value = artist.verdict || '';
+      // Custom verdicts from data.js are not in the preset list — add them so saving doesn't wipe them
+      const verdict = artist.verdict || '';
+      if (verdict && ![...this.editVerdict.options].some(o => o.value === verdict)) {
+        this.editVerdict.add(new Option(verdict, verdict), 1);
+      }
+      this.editVerdict.value = verdict;
       this.editImpression.value = artist.impression || '';
     }
 
@@ -535,7 +578,9 @@
 
       this.modalName.textContent = artist.name;
       this.modalTierBadge.textContent = `${tierConfig.icon} ${tierConfig.badge}`;
-      this.modalTierBadge.className = `card-tier-badge badge-tier-${artist.tier}`;
+      this.artistDialog.className = `modal artist-modal tier-${artist.tier}`;
+      this.modalBody = this.modalBody || this.artistDialog.querySelector('.modal-body');
+      this.modalBody.scrollTop = 0;
 
       // Verdict badge in header
       if (this.modalVerdictBadge) {
@@ -550,6 +595,7 @@
       // Cover Artwork
       if (artist.image) {
         this.modalCoverImg.src = artist.image;
+        this.modalCoverImg.alt = `Обкладинка: ${artist.name}`;
         this.modalCoverImg.style.display = 'block';
         this.modalCoverFallback.style.display = 'none';
       } else {
@@ -562,61 +608,41 @@
       this.modalYtArtistLink.href = getYouTubeMusicSearchUrl(artist.name);
 
       // Listened Tracks
+      const trackRow = (order, title, href, linkLabel, isPlaceholder = false) => `
+        <div class="track-row">
+          <div class="track-info">
+            <span class="track-order">${order}</span>
+            <span class="track-name${isPlaceholder ? ' is-placeholder' : ''}">${escapeHTML(title)}</span>
+          </div>
+          <a href="${href}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-yt">${linkLabel}</a>
+        </div>
+      `;
+
       if (artist.tracks && artist.tracks.length > 0) {
-        this.modalTracksList.innerHTML = artist.tracks.map((track, idx) => `
-          <div class="track-row">
-            <div class="track-info">
-              <span class="track-order">#0${idx + 1}</span>
-              <span class="track-name">${track}</span>
-            </div>
-            <a href="${getYouTubeMusicSearchUrl(artist.name, track)}" target="_blank" rel="noopener noreferrer" class="track-yt-btn">
-              <span>▶</span> Слухати
-            </a>
-          </div>
-        `).join('');
+        this.modalTracksList.innerHTML = artist.tracks.map((track, idx) =>
+          trackRow(`0${idx + 1}`, track, getYouTubeMusicSearchUrl(artist.name, track), '<span aria-hidden="true">▶</span> Слухати')
+        ).join('');
       } else {
-        this.modalTracksList.innerHTML = `
-          <div class="track-row">
-            <div class="track-info">
-              <span class="track-order">1-3</span>
-              <span class="track-name" style="color: var(--text-secondary); font-style: italic;">
-                3 найпопулярніші пісні на YouTube Music
-              </span>
-            </div>
-            <a href="${getYouTubeMusicSearchUrl(artist.name)}" target="_blank" rel="noopener noreferrer" class="track-yt-btn">
-              <span>🔍</span> Топ у YT Music
-            </a>
-          </div>
-        `;
+        this.modalTracksList.innerHTML = trackRow('1–3', '3 найпопулярніші пісні на YouTube Music', getYouTubeMusicSearchUrl(artist.name), '<span aria-hidden="true">🔍</span> Топ', true);
       }
 
       // Bonus Tracks
       if (artist.bonusTracks && artist.bonusTracks.length > 0) {
         this.modalBonusSection.style.display = 'block';
-        this.modalBonusList.innerHTML = artist.bonusTracks.map((track, idx) => `
-          <div class="track-row">
-            <div class="track-info">
-              <span class="track-order">+${idx + 1}</span>
-              <span class="track-name">${track}</span>
-            </div>
-            <a href="${getYouTubeMusicSearchUrl(artist.name, track)}" target="_blank" rel="noopener noreferrer" class="track-yt-btn">
-              <span>▶</span> Слухати
-            </a>
-          </div>
-        `).join('');
+        this.modalBonusList.innerHTML = artist.bonusTracks.map((track, idx) =>
+          trackRow(`+${idx + 1}`, track, getYouTubeMusicSearchUrl(artist.name, track), '<span aria-hidden="true">▶</span> Слухати')
+        ).join('');
       } else {
         this.modalBonusSection.style.display = 'none';
       }
 
       // Impression
       if (artist.impression && artist.impression.trim().length > 0) {
-        this.modalImpression.innerHTML = `
-          <p style="white-space: pre-line;">${artist.impression}</p>
-        `;
+        this.modalImpression.innerHTML = `<p>${escapeHTML(artist.impression.trim())}</p>`;
       } else {
         this.modalImpression.innerHTML = `
-          <p style="color: var(--text-muted); font-style: italic;">
-            Замітка для цього артиста поки не додана. Натисніть кнопку «✏️ Редагувати» вище, щоб додати прослухані пісні та ваші емоції!
+          <p class="is-empty">
+            Замітка для цього артиста поки не додана. Натисніть ✏️ вгорі, щоб додати прослухані пісні та ваші емоції.
           </p>
         `;
       }
@@ -677,7 +703,7 @@
       this.saveArtists();
       this.render();
       alert(`Опрацьовано заміток: знайдено та оновлено ${parsedCount} артистів!`);
-      this.notesSection.style.display = 'none';
+      this.setNotesPanelOpen(false);
     }
   }
 

@@ -2,108 +2,107 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#070c14">
   <title>Айсберг Українського Репу — Мої враження</title>
-  <link rel="stylesheet" href="./styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="container">
     <!-- Header -->
-    <header>
+    <header class="site-header">
       <div class="header-badge">
-        <span>🧊</span> Експеримент & Дослідження
+        <span aria-hidden="true">🧊</span> Експеримент &amp; Дослідження
       </div>
-      
+
       <div class="title-row">
-        <div>
+        <div class="title-content">
           <h1>Айсберг Українського Репу</h1>
           <p class="subtitle">
             Інтерактивна мапа та особистий щоденник прослуховування тусовки укр-репу: від поп-хітів та мейнстріму до найглибшого мемного андеграунду.
           </p>
-          <div class="method-box">
-            <strong>🎧 Мій метод дослідження:</strong> шукав кожного виконавця на <strong>YouTube Music</strong>, слухав їх <strong>3 найпопулярніші пісні від початку до кінця</strong> незалежно від смаку. Якщо артист зацікавлював — занурювався далі і слухав більше треків.
-          </div>
         </div>
 
         <div class="header-actions">
-          <button id="btn-show-image" class="btn" title="Показати оригінальну картинку айсбергу">
-            <span>🗺️</span> Оригінал Айсбергу
+          <button id="btn-show-image" class="btn" type="button" title="Показати оригінальну картинку айсбергу">
+            <span aria-hidden="true">🗺️</span> <span>Оригінал<span class="hide-sm"> айсбергу</span></span>
           </button>
-          <button id="btn-toggle-notes" class="btn btn-primary" title="Вставити або оновити замітки">
-            <span>📝</span> Мої замітки
+          <button id="btn-toggle-notes" class="btn" type="button" title="Вставити або оновити замітки" aria-expanded="false" aria-controls="notes-import-section">
+            <span aria-hidden="true">📝</span> Мої замітки
           </button>
         </div>
+      </div>
+
+      <div class="method-box">
+        <strong>🎧 Мій метод дослідження:</strong> шукав кожного виконавця на <strong>YouTube Music</strong>, слухав їх <strong>3 найпопулярніші пісні від початку до кінця</strong> незалежно від смаку. Якщо артист зацікавлював — занурювався далі і слухав більше треків.
       </div>
 
       <!-- Quick Stats -->
-      <div class="stats-grid">
+      <dl class="stats-grid">
         <div class="stat-card">
-          <div class="stat-value" id="stat-total-artists">58</div>
-          <div class="stat-label">Артистів у базі</div>
+          <dt class="stat-label">Артистів</dt>
+          <dd class="stat-value" id="stat-total-artists">58</dd>
         </div>
         <div class="stat-card">
-          <div class="stat-value" id="stat-total-tracks">200+</div>
-          <div class="stat-label">Прослухано пісень</div>
+          <dt class="stat-label">Пісень</dt>
+          <dd class="stat-value" id="stat-total-tracks">200+</dd>
         </div>
         <div class="stat-card">
-          <div class="stat-value" id="stat-with-notes">58</div>
-          <div class="stat-label">Заповнено відгуків (100%)</div>
+          <dt class="stat-label">Відгуків</dt>
+          <dd class="stat-value" id="stat-with-notes">58</dd>
         </div>
         <div class="stat-card">
-          <div class="stat-value">4</div>
-          <div class="stat-label">Рівні сцени</div>
+          <dt class="stat-label">Рівні</dt>
+          <dd class="stat-value">4</dd>
         </div>
-      </div>
+      </dl>
     </header>
 
     <!-- Notes Import / Paste Area (Collapsible) -->
-    <section id="notes-import-section" class="notes-panel" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 style="font-size: 1.2rem; font-weight: 700;">📝 Імпорт твоїх заміток</h3>
-        <button id="btn-close-notes" class="close-btn" style="width: 28px; height: 28px;">&times;</button>
+    <section id="notes-import-section" class="notes-panel" hidden>
+      <div class="panel-header">
+        <h2 class="panel-title">📝 Імпорт твоїх заміток</h2>
+        <button id="btn-close-notes" class="icon-btn" type="button" aria-label="Закрити">&times;</button>
       </div>
-      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 6px;">
+      <p class="panel-text">
         Сюди можна вставити текст твоєї замітки у будь-якому форматі. Також зміни зберігаються прямо у браузері (localStorage) або можуть бути експортовані в <code>data.js</code>.
       </p>
-      <textarea id="raw-notes-input" class="notes-textarea" placeholder="Встав текст своїх заміток сюди... Наприклад:
+      <textarea id="raw-notes-input" class="form-input notes-textarea" placeholder="Встав текст своїх заміток сюди... Наприклад:
 Clonnex:
 1. Теккен
 2. Малолітка
 3. Чому ти така сумна?
 Враження: дуже драйвовий звук, специфічний гумор, вайб відмінний!"></textarea>
-      <div style="display: flex; gap: 12px; justify-content: flex-end;">
-        <button id="btn-save-notes" class="btn btn-primary">Зберегти та розібрати замітки</button>
+      <div class="form-actions">
+        <button id="btn-save-notes" class="btn btn-primary" type="button">Зберегти та розібрати замітки</button>
       </div>
     </section>
 
     <!-- Controls: Search, Filters, View Modes -->
     <div class="controls-bar">
       <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" class="search-input" placeholder="Пошук артиста, треку або емоції...">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="search-input" class="search-input" placeholder="Артист, трек, вайб…" aria-label="Пошук артиста, треку або емоції" autocomplete="off" enterkeyhint="search">
       </div>
 
-      <div class="filter-pills" id="filter-tier-group">
-        <button class="filter-pill active" data-tier="all">Всі (58)</button>
-        <button class="filter-pill" data-tier="0">📈 Топ-чарти (5)</button>
-        <button class="filter-pill" data-tier="1">🏔️ Вершина (13)</button>
-        <button class="filter-pill" data-tier="2">🌊 Під водою (20)</button>
-        <button class="filter-pill" data-tier="3">🕳️ Безодня (20)</button>
+      <div class="filter-pills" id="filter-tier-group" role="group" aria-label="Фільтр за рівнем">
+        <button type="button" class="filter-pill active" data-tier="all" aria-pressed="true">Всі <span class="pill-count">58</span></button>
+        <button type="button" class="filter-pill tier-0" data-tier="0" aria-pressed="false">📈 Топ-чарти <span class="pill-count">5</span></button>
+        <button type="button" class="filter-pill tier-1" data-tier="1" aria-pressed="false">🏔️ Вершина <span class="pill-count">13</span></button>
+        <button type="button" class="filter-pill tier-2" data-tier="2" aria-pressed="false">🌊 Під водою <span class="pill-count">20</span></button>
+        <button type="button" class="filter-pill tier-3" data-tier="3" aria-pressed="false">🕳️ Безодня <span class="pill-count">20</span></button>
       </div>
 
-      <div class="view-toggle">
-        <button id="view-iceberg-btn" class="view-btn active" title="Вигляд Айсбергу">
-          <span>🧊</span> Айсберг
+      <div class="view-toggle" role="group" aria-label="Вигляд">
+        <button type="button" id="view-iceberg-btn" class="view-btn active" title="Вигляд айсбергу" aria-label="Айсберг" aria-pressed="true">
+          <span aria-hidden="true">🧊</span><span class="view-btn-label">Айсберг</span>
         </button>
-        <button id="view-grid-btn" class="view-btn" title="Вигляд картками">
-          <span>🗂️</span> Картки
+        <button type="button" id="view-grid-btn" class="view-btn" title="Вигляд картками" aria-label="Картки" aria-pressed="false">
+          <span aria-hidden="true">🗂️</span><span class="view-btn-label">Картки</span>
         </button>
       </div>
     </div>
@@ -111,82 +110,59 @@ Clonnex:
     <!-- Main Content: Iceberg Visual View -->
     <main id="iceberg-view" class="iceberg-container">
       <!-- Tier 0: Charts -->
-      <section class="iceberg-tier-section tier-section-0" id="section-tier-0">
+      <section class="iceberg-tier-section tier-section-0 tier-0" id="section-tier-0" aria-labelledby="title-tier-0">
         <div class="tier-header">
-          <div class="tier-title-group">
-            <span class="tier-icon">📈</span>
-            <div>
-              <div class="tier-title">Рівень 0: Топ-чарти</div>
-              <div class="tier-description">Широкі маси, мільйонні перегляди, радіо та поп-реп</div>
-            </div>
-          </div>
+          <h2 class="tier-title" id="title-tier-0"><span class="tier-icon" aria-hidden="true">📈</span>Рівень 0: Топ-чарти</h2>
           <span class="tier-count-badge" id="count-tier-0">5 артистів</span>
+          <p class="tier-description">Широкі маси, мільйонні перегляди, радіо та поп-реп</p>
         </div>
         <div class="artists-tags-cloud" id="cloud-tier-0"></div>
       </section>
 
-      <!-- Base to Surface Separator -->
-      <div class="base-separator">
-        <div class="base-line"></div>
-        <div class="base-badge">🏔️ ПЕРЕХІД ДО АЙСБЕРГУ (НОВА ХВИЛЯ) 🏔️</div>
-        <div class="base-line"></div>
+      <div class="depth-separator depth-separator--base" data-between="0-1" aria-hidden="true">
+        <span class="depth-line"></span>
+        <span class="depth-badge">🏔️ Перехід до айсбергу<span class="depth-note"> · нова хвиля</span></span>
+        <span class="depth-line"></span>
       </div>
 
       <!-- Tier 1: Surface -->
-      <section class="iceberg-tier-section tier-section-1" id="section-tier-1">
+      <section class="iceberg-tier-section tier-section-1 tier-1" id="section-tier-1" aria-labelledby="title-tier-1">
         <div class="tier-header">
-          <div class="tier-title-group">
-            <span class="tier-icon">🏔️</span>
-            <div>
-              <div class="tier-title">Рівень 1: Вершина Айсберга</div>
-              <div class="tier-description">Поверхня — мейнстрім, впізнавані треки, широка аудиторія, чарти</div>
-            </div>
-          </div>
+          <h2 class="tier-title" id="title-tier-1"><span class="tier-icon" aria-hidden="true">🏔️</span>Рівень 1: Вершина айсберга</h2>
           <span class="tier-count-badge" id="count-tier-1">13 артистів</span>
+          <p class="tier-description">Поверхня — мейнстрім, впізнавані треки, широка аудиторія, чарти</p>
         </div>
         <div class="artists-tags-cloud" id="cloud-tier-1"></div>
       </section>
 
-      <!-- Water Separator -->
-      <div class="water-separator">
-        <div class="water-line"></div>
-        <div class="water-badge">🌊 ЛІНІЯ ВОДИ (ПОВЕРХНЯ) 🌊</div>
-        <div class="water-line"></div>
+      <div class="depth-separator depth-separator--water" data-between="1-2" aria-hidden="true">
+        <span class="depth-line"></span>
+        <span class="depth-badge">🌊 Лінія води<span class="depth-note"> · поверхня</span></span>
+        <span class="depth-line"></span>
       </div>
 
       <!-- Tier 2: Underwater -->
-      <section class="iceberg-tier-section tier-section-2" id="section-tier-2">
+      <section class="iceberg-tier-section tier-section-2 tier-2" id="section-tier-2" aria-labelledby="title-tier-2">
         <div class="tier-header">
-          <div class="tier-title-group">
-            <span class="tier-icon">🌊</span>
-            <div>
-              <div class="tier-title">Рівень 2: Під Водою</div>
-              <div class="tier-description">Середня глибина — альтернативний реп, нішеві зірки, самобутній стиль</div>
-            </div>
-          </div>
-          <span class="tier-count-badge" id="count-tier-2">18 артистів</span>
+          <h2 class="tier-title" id="title-tier-2"><span class="tier-icon" aria-hidden="true">🌊</span>Рівень 2: Під водою</h2>
+          <span class="tier-count-badge" id="count-tier-2">20 артистів</span>
+          <p class="tier-description">Середня глибина — альтернативний реп, нішеві зірки, самобутній стиль</p>
         </div>
         <div class="artists-tags-cloud" id="cloud-tier-2"></div>
       </section>
 
-      <!-- Abyss Separator -->
-      <div class="abyss-separator">
-        <div class="abyss-line"></div>
-        <div class="abyss-badge">🕳️ МЕЖА БЕЗОДНІ (АНДЕГРАУНД) 🕳️</div>
-        <div class="abyss-line"></div>
+      <div class="depth-separator depth-separator--abyss" data-between="2-3" aria-hidden="true">
+        <span class="depth-line"></span>
+        <span class="depth-badge">🕳️ Межа безодні<span class="depth-note"> · андеграунд</span></span>
+        <span class="depth-line"></span>
       </div>
 
       <!-- Tier 3: Abyss -->
-      <section class="iceberg-tier-section tier-section-3" id="section-tier-3">
+      <section class="iceberg-tier-section tier-section-3 tier-3" id="section-tier-3" aria-labelledby="title-tier-3">
         <div class="tier-header">
-          <div class="tier-title-group">
-            <span class="tier-icon">🕳️</span>
-            <div>
-              <div class="tier-title">Рівень 3: Безодня (Дно)</div>
-              <div class="tier-description">Глибокий андеграунд — гіперпоп, мікро-сцени, експерименти, мемний реп</div>
-            </div>
-          </div>
-          <span class="tier-count-badge" id="count-tier-3">22 артисти</span>
+          <h2 class="tier-title" id="title-tier-3"><span class="tier-icon" aria-hidden="true">🕳️</span>Рівень 3: Безодня (дно)</h2>
+          <span class="tier-count-badge" id="count-tier-3">20 артистів</span>
+          <p class="tier-description">Глибокий андеграунд — гіперпоп, мікро-сцени, експерименти, мемний реп</p>
         </div>
         <div class="artists-tags-cloud" id="cloud-tier-3"></div>
       </section>
@@ -196,27 +172,25 @@ Clonnex:
     <main id="cards-view" class="cards-grid" style="display: none;"></main>
 
     <!-- Empty State -->
-    <div id="no-results" style="display: none; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-      <div style="font-size: 3rem; margin-bottom: 12px;">🔍</div>
-      <h3>Нічого не знайдено</h3>
-      <p style="margin-top: 6px;">Спробуйте змінити пошуковий запит або скинути фільтри</p>
+    <div id="no-results" class="empty-state" hidden>
+      <div class="empty-state-icon" aria-hidden="true">🔍</div>
+      <h3 class="empty-state-title">Нічого не знайдено</h3>
+      <p class="empty-state-text">Спробуйте змінити пошуковий запит або скинути фільтри</p>
+      <button id="btn-reset-filters" class="btn" type="button">Скинути фільтри</button>
     </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="site-footer">
       <p>Айсберг Українського Репу • Персональний щоденник вражень</p>
-      <p style="margin-top: 6px; font-size: 0.8rem; color: var(--text-muted);">
-        Всі посилання ведуть на офіційний YouTube Music для швидкого прослуховування.
-      </p>
+      <p class="footer-note">Всі посилання ведуть на офіційний YouTube Music для швидкого прослуховування.</p>
     </footer>
   </div>
 
   <!-- Detail Modal Dialog -->
-  <dialog id="artist-dialog" class="artist-modal">
+  <dialog id="artist-dialog" class="modal artist-modal" aria-labelledby="modal-artist-name">
     <div class="modal-hero">
-      <button id="modal-close-btn" class="close-btn modal-close-btn" aria-label="Закрити">&times;</button>
       <div class="modal-hero-cover">
-        <img id="modal-cover-img" class="modal-cover-img" src="" alt="Обкладинка" style="display: none;">
+        <img id="modal-cover-img" class="modal-cover-img" src="" alt="" style="display: none;">
         <div id="modal-cover-fallback" class="card-avatar-fallback">
           <span id="modal-cover-initials" class="fallback-initials">UA</span>
         </div>
@@ -224,62 +198,63 @@ Clonnex:
       <div class="modal-hero-details">
         <div class="modal-badges-row">
           <span id="modal-artist-tier-badge" class="card-tier-badge"></span>
-          <span id="modal-verdict-badge" class="verdict-tag"></span>
         </div>
         <h2 id="modal-artist-name" class="modal-title"></h2>
-        <div class="modal-actions-row">
-          <button id="modal-edit-btn" class="btn btn-sm btn-edit-badge" title="Редагувати треки та враження">✏️ Редагувати</button>
-        </div>
+        <span id="modal-verdict-badge" class="verdict-tag"></span>
+      </div>
+      <div class="modal-hero-actions">
+        <button id="modal-close-btn" class="icon-btn" type="button" aria-label="Закрити">&times;</button>
+        <button id="modal-edit-btn" class="icon-btn" type="button" title="Редагувати треки та враження" aria-label="Редагувати">✏️</button>
       </div>
     </div>
 
     <div class="modal-body">
       <!-- Normal View Mode -->
-      <div id="modal-view-mode">
+      <div id="modal-view-mode" class="modal-view-mode">
+        <!-- Impressions Section (main content first) -->
+        <section class="modal-section">
+          <h3 class="section-label">💭 Мої враження та емоції</h3>
+          <div id="modal-impression-content" class="modal-impression-box"></div>
+        </section>
+
         <!-- Tracks Section -->
-        <div>
-          <div class="section-label">🎧 Прослухані пісні (YouTube Music Top 3)</div>
+        <section class="modal-section">
+          <h3 class="section-label">🎧 Прослухані пісні · YouTube Music Top 3</h3>
           <div id="modal-tracks-list" class="modal-tracks-list"></div>
-        </div>
+        </section>
 
         <!-- Bonus Tracks Section -->
-        <div id="modal-bonus-section" style="display: none; margin-top: 20px;">
-          <div class="section-label">🔥 Додатково прослухано (зацікавило)</div>
+        <section id="modal-bonus-section" class="modal-section" style="display: none;">
+          <h3 class="section-label">🔥 Додатково прослухано</h3>
           <div id="modal-bonus-list" class="modal-tracks-list"></div>
-        </div>
-
-        <!-- Impressions Section -->
-        <div style="margin-top: 20px;">
-          <div class="section-label">💭 Мої враження та емоції</div>
-          <div id="modal-impression-content" class="modal-impression-box"></div>
-        </div>
+        </section>
       </div>
 
       <!-- Quick Edit Mode -->
-      <form id="modal-edit-mode" style="display: none;">
+      <form id="modal-edit-mode" class="modal-edit-form" style="display: none;">
         <div class="form-group">
-          <label class="form-label">🖼️ Посилання на фото / обкладинку (URL):</label>
-          <input type="text" id="edit-image-url" class="form-input" placeholder="Встав посилання на фото або залиш порожнім для автопошуку">
+          <label class="form-label" for="edit-image-url">🖼️ Посилання на фото / обкладинку (URL)</label>
+          <input type="url" id="edit-image-url" class="form-input" placeholder="Встав посилання або залиш порожнім">
         </div>
         <div class="form-group">
-          <label class="form-label">🎵 Пісня 1 (Топ YouTube Music):</label>
+          <label class="form-label" for="edit-track-1">🎵 Пісня 1 (Топ YouTube Music)</label>
           <input type="text" id="edit-track-1" class="form-input" placeholder="Назва пісні...">
         </div>
         <div class="form-group">
-          <label class="form-label">🎵 Пісня 2:</label>
+          <label class="form-label" for="edit-track-2">🎵 Пісня 2</label>
           <input type="text" id="edit-track-2" class="form-input" placeholder="Назва пісні...">
         </div>
         <div class="form-group">
-          <label class="form-label">🎵 Пісня 3:</label>
+          <label class="form-label" for="edit-track-3">🎵 Пісня 3</label>
           <input type="text" id="edit-track-3" class="form-input" placeholder="Назва пісні...">
         </div>
         <div class="form-group">
-          <label class="form-label">➕ Додаткові треки (через кому):</label>
+          <label class="form-label" for="edit-tracks-bonus">➕ Додаткові треки (через кому)</label>
           <input type="text" id="edit-tracks-bonus" class="form-input" placeholder="Назва 4, Назва 5...">
         </div>
         <div class="form-group">
-          <label class="form-label">⭐ Вердикт / Оцінка:</label>
-          <select id="edit-verdict" class="form-select">
+          <label class="form-label" for="edit-verdict">⭐ Вердикт / Оцінка</label>
+          <select id="edit-verdict" class="form-input form-select">
             <option value="">Без вердикту</option>
             <option value="🔥 Розрив / Топ">🔥 Розрив / Топ</option>
             <option value="👍 Зайшло в плейліст">👍 Зайшло в плейліст</option>
@@ -291,35 +266,37 @@ Clonnex:
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">💬 Враження та емоції:</label>
-          <textarea id="edit-impression" class="notes-textarea" style="height: 120px; margin: 0;" placeholder="Опиши свої враження від цього артиста..."></textarea>
+          <label class="form-label" for="edit-impression">💬 Враження та емоції</label>
+          <textarea id="edit-impression" class="form-input notes-textarea notes-textarea--compact" placeholder="Опиши свої враження від цього артиста..."></textarea>
         </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
-          <button type="button" id="btn-cancel-edit" class="btn btn-sm">Скасувати</button>
-          <button type="submit" id="btn-save-single-artist" class="btn btn-primary btn-sm">Зберегти замітку</button>
+        <div class="form-actions">
+          <button type="button" id="btn-cancel-edit" class="btn">Скасувати</button>
+          <button type="submit" id="btn-save-single-artist" class="btn btn-primary">Зберегти</button>
         </div>
       </form>
     </div>
 
     <div class="modal-footer">
       <div class="nav-buttons">
-        <button id="modal-prev-btn" class="btn btn-sm">← Попередній</button>
-        <button id="modal-next-btn" class="btn btn-sm">Наступний →</button>
+        <button id="modal-prev-btn" class="btn" type="button" aria-label="Попередній артист"><span>←<span class="hide-sm"> Попередній</span></span></button>
+        <button id="modal-next-btn" class="btn" type="button" aria-label="Наступний артист"><span><span class="hide-sm">Наступний </span>→</span></button>
       </div>
 
-      <a id="modal-yt-artist-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-        <span>▶</span> YouTube Music
+      <a id="modal-yt-artist-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-yt">
+        <span aria-hidden="true">▶</span> YouTube Music
       </a>
     </div>
   </dialog>
 
   <!-- Iceberg Image Dialog -->
-  <dialog id="image-dialog" class="artist-modal" style="max-width: 900px; padding: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h3 style="font-weight: 700;">Оригінальний Айсберг Українського Репу</h3>
-      <button id="image-close-btn" class="close-btn">&times;</button>
+  <dialog id="image-dialog" class="modal image-modal" aria-labelledby="image-dialog-title">
+    <div class="panel-header">
+      <h2 class="panel-title" id="image-dialog-title">Оригінальний айсберг українського репу</h2>
+      <button id="image-close-btn" class="icon-btn" type="button" aria-label="Закрити">&times;</button>
     </div>
-    <img src="./iceberg.webp" alt="Айсберг Українського Репу" class="iceberg-preview-img">
+    <div class="image-modal-body">
+      <img src="./iceberg.webp" alt="Айсберг Українського Репу" class="iceberg-preview-img">
+    </div>
   </dialog>
 
   <script src="./data.js"></script>
