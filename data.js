@@ -47,7 +47,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Пару найпопулярніших пісень з рейтингу в Ютуб мюзік. Навіть ліньки писати.\n\nАльоно, сучка, шмара, ти. Бичівка, руда ти.\nСупер нецікава творчість. Попса для широких мас з елементами репу. Нічого цікавого, класно звучного. Контент для аудиторії Анни Трінчер.\nМама Тереза красива пісня, але тільки парт Jerry Heil.",
     verdict: "💤 Контент для широких мас",
-    image: "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/ef/5a/c3/ef5ac369-9802-65fd-d55c-79b0b885dfb8/886449072347.jpg/600x600bb.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/f51d536271e012b7f1021a35a2f9813a/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -69,7 +69,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Щось на рівні «Пляшка Фраголіно».",
     verdict: "💤 «Пляшка Фраголіно»",
-    image: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/6f/3a/50/6f3a5078-a61f-f7ef-694e-a5a247ba2f44/886449305230.jpg/600x600bb.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/ae1a97c3f7c362d1b8e4ff35796bed1f/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -91,7 +91,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Ластівки-ластівки-ластівки😂😂😂\nБля, ну це як Артур Пірожков: потанцювати пʼяним можна, але слухати… ні, дякую.",
     verdict: "💀 Артур Пірожков",
-    image: "https://i.ytimg.com/vi/kYJv8Z1kK8Q/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/ea/f1/2eeaf17c-26d6-3072-1c4c-ec2c766ee0a2/cover.jpg/600x600bb.jpg",
     highlight: false
   },
 
@@ -106,7 +106,7 @@ const ARTISTS = [
     bonusTracks: ["Патронус"],
     impression: "Половина пісень реп, половина поп. Як репер — повна хуєта. Його образ — іспанський сором. Тексти помойка: «В попсі немає правди» — тіп, ти крінж, тому що твої найпопулярніші пісні це другосортний поп…",
     verdict: "💀 Іспанський сором",
-    image: "https://i.ytimg.com/vi/ABx69lnYWFE/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/7dcc7ca5c222b93f974fe098b1534ce3/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -161,7 +161,7 @@ const ARTISTS = [
     bonusTracks: ["Сни", "Я забувся", "Зима", "Чорнобрива", "Емоційний мазохізм", "Ночі так тягнуться", "Звуками"],
     impression: "Прикольно. Пісні в різних стилях: хіп-хоп, треп, поп. Загалом навіть вайбово. Але особливо нічого виразного. Пісні та слова не запам'яталися. Лайків немає.",
     verdict: "😐 Вайбово, але без лайків",
-    image: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/aa/25/5f/aa255feb-df98-1e56-e30b-34bb2119b956/197188538880.jpg/600x600bb.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/5eda70ac8b49295bd2e70096b64922ac/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -172,7 +172,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "«На двох» — лютий вайб, лайк. В іншому — посередність, аля поп-реп🥸\n«Я живу як ментос у колу»🗿\n«Якщо нам зашити рота, то нам усім пизда» 🫡\nГлибоко. Музика чисто для якоїсь Вікторії.",
     verdict: "🧐 «На двох» — лютий вайб",
-    image: "https://i.ytimg.com/vi/s2_zH0fKq54/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/fbe499f46fa7a4f84c0e76e8cebbc37d/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -194,7 +194,7 @@ const ARTISTS = [
     bonusTracks: ["PsyKhin"],
     impression: "Big Baby Tape? Біти залік, тексти не зачепили.",
     verdict: "🧐 Біти залік, тексти ні",
-    image: "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/7f/f0/22/7ff0227e-eb8b-76b0-0b7d-68816bb19b59/19UM1IM14544.rgb.jpg/600x600bb.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/96af20e8ff8db01436ffb12cb8abe026/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -227,7 +227,7 @@ const ARTISTS = [
     bonusTracks: ["Агонія", "Рецепт"],
     impression: "Бля, дякую Нестору: у нього на фіті дівчинка Nadeen. У неї лютий психодел-флоу. Вона прям крута, підписався на неї.\nЗа це і лайк: «Як твої справи» та «Рецепт» тупо витягує.\n«No Days Off» — жорсткий біт та подача, прикольно, але панчі хуєта.\nВ іншому — ну, він збудливо картавить, більше нічим не виділився..\nІ бля, я тебе благаю: не співай🫣 Читай вже свій реп.",
     verdict: "👍 Лайк за фіт з Nadeen",
-    image: "https://i.ytimg.com/vi/eG2Z410m-3Q/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/db6a31b3e59fcb41f0a9bf9ec72d75fd/1000x1000-000000-80-0-0.jpg",
     highlight: true
   },
   {
@@ -238,7 +238,7 @@ const ARTISTS = [
     bonusTracks: ["Намалюй", "Альбом «Декілька пісень про невизначеність»"],
     impression: "Прикольний чувак, цікава музика. Дуже сподобався інструментал. Цікаво поєднує спів з репом, хоча спів мені подобається більше. В треках відчувається текстура і якийсь сенс. Є фіти з SadSvit, Курган — плюс вайб. Було б цікаво більш детально ознайомитися з творчістю.",
     verdict: "❤️ Цікава музика / +Вайб",
-    image: "https://i.ytimg.com/vi/1u4jN_S1_pE/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/9e4f8e90592552f92874e009a070ddf7/1000x1000-000000-80-0-0.jpg",
     highlight: true
   },
 
@@ -275,7 +275,7 @@ const ARTISTS = [
     bonusTracks: ["I Luv u haters", "Hollywood", "Afterparty", "Ok", "Pain 2002"],
     impression: "Trap / cloud rap. Те ж саме, що і Clonnex, тільки гірше. Жодна пісня не сподобалась. Взагалі незрозуміло, що вони там пиздять у піснях, просто жують слова. Просто не моє.",
     verdict: "💤 Жують слова / Не моє",
-    image: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/a6/8b/65/a68b657c-cac6-68e6-3bde-b79d58fbc795/18UMGIM30762.rgb.jpg/600x600bb.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/646e4eb958b53d791f25e23dbee49458/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -286,7 +286,7 @@ const ARTISTS = [
     bonusTracks: ["Цнотлива", "Губи"],
     impression: "По вайбу як Пошлая Молли. Не зайшло.",
     verdict: "💤 Як Пошлая Молли / Не зайшло",
-    image: "https://i.ytimg.com/vi/nq2yVSrNOJA/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/e76cd71076b8f9b26c998dc320fa1465/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -297,7 +297,7 @@ const ARTISTS = [
     bonusTracks: ["BOZO", "Swagadona", "Iced Out", "Dawg Talk"],
     impression: "Треп. Так собі, я би навіть сказав — посередність.",
     verdict: "😐 Посередність",
-    image: "https://i.ytimg.com/vi/32e2YhT2O5c/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/a432be1ad6a88afd8713fcb2972b1d01/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -308,7 +308,7 @@ const ARTISTS = [
     bonusTracks: ["Вибратись", "Боюсь"],
     impression: "Цей ніггер має реальний стиль. ПРОСТО АХУЄНО! Тіп такого гівна навалює. Їбать.. Поки що найкраще, що я слухав.\nЛайк усім пісням, які я слухав!",
     verdict: "🔥 ГОЛОВНЕ ВІДКРИТТЯ / ТОП-1",
-    image: "https://i.ytimg.com/vi/m4gH6x1v3uQ/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/06447046db4478cf0e3baf5980808d59/1000x1000-000000-80-0-0.jpg",
     highlight: true
   },
   {
@@ -385,7 +385,7 @@ const ARTISTS = [
     bonusTracks: ["Ковтунами світла"],
     impression: "Повна хуєта.",
     verdict: "💩 Повна хуєта",
-    image: "https://i.ytimg.com/vi/kYv9GqM72aU/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/25/7f/7f/257f7f73-848d-2743-befc-6dcfb11267fb/cover.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -396,7 +396,7 @@ const ARTISTS = [
     bonusTracks: ["Обнулил"],
     impression: "Говнище.",
     verdict: "💩 Говнище",
-    image: "https://i.ytimg.com/vi/0kUo8X9lT0U/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/aa9a458f3bd713d10a04935c89afb6d0/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -418,7 +418,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "У тіпа немає жодного синглу. Я не їбу, кого там оцінювати. На фітах вони всі однакові. Треп-хуєта чергова.",
     verdict: "💤 Немає синглів",
-    image: "https://i.ytimg.com/vi/k4T0h9w3U-c/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/5c/a5/45/5ca54541-012a-0b43-2bdf-e92b86623366/artwork.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -429,7 +429,7 @@ const ARTISTS = [
     bonusTracks: ["Дім", "Може ти б ти думав", "Український Шєт Лонг"],
     impression: "Місцями забавно: «Шишка із Закарпаття». Більше емоцій, крім «забавно», не відчув.",
     verdict: "🧐 Забавно («Шишка із Закарпаття»)",
-    image: "https://i.ytimg.com/vi/lGg8K-CEbLY/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/d49a42836a2a7022bd36d58e62135ab8/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -488,7 +488,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Це взагалі Рок, що воно тут робить?😂\nКайфанув після однотипних клауд-реперів, дякую😂 Але таке, можна щось і краще послухати.",
     verdict: "🎸 Неочікувано Рок! Кайфанув",
-    image: "https://i.ytimg.com/vi/4b7P6a9n_o0/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/50/e8/0d/50e80df3-69fc-480a-ad92-d0a36409eb12/0.jpg/600x600bb.jpg",
     highlight: true
   },
   {
@@ -499,7 +499,7 @@ const ARTISTS = [
     bonusTracks: ["Catcall"],
     impression: "Клубняк / жіночий треп. Забавно, але не качає. Обкладинки.. фу.. пошлятіна (дякую, я подрочив).",
     verdict: "🔞 Пошлятіна / Забавно",
-    image: "https://i.ytimg.com/vi/5aM1QjS8s-I/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/8c8697619aff151b806ddd7211239708/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -510,7 +510,7 @@ const ARTISTS = [
     bonusTracks: ["MoneyFeed"],
     impression: "Однотипна параша.",
     verdict: "💩 Однотипна параша",
-    image: "https://i.ytimg.com/vi/525u_s5f_9s/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/8ea180e385beb198614a26f9997ffb42/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -521,7 +521,7 @@ const ARTISTS = [
     bonusTracks: ["Мені Холодно"],
     impression: "Обкладинки чисто відоси MrBeast. Жодного слова не зрозумів з того, що він співав. Дуже дивний флоу. Мені не подобається.",
     verdict: "🧐 Обкладинки MrBeast / Дивний флоу",
-    image: "https://i.ytimg.com/vi/gT5a793k8V0/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/1a23b0bf931eace095b5ac2e1e444878/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -532,7 +532,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Чергова клауд-хуйня.",
     verdict: "💤 Чергова клауд-хуйня",
-    image: "https://i.ytimg.com/vi/sU14z7qX550/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/ea/5a/a1/ea5aa155-40a5-da91-f23f-52ea50e92ee4/artwork.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -554,7 +554,7 @@ const ARTISTS = [
     bonusTracks: ["Улюблена"],
     impression: "Треп, загалом звучить більш-менш, але нічого вау.",
     verdict: "😐 Більш-менш",
-    image: "https://i.ytimg.com/vi/kYJ5o-v-Z0s/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/bcbad50fc394e5f74efdcee5734cb95e/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -565,7 +565,7 @@ const ARTISTS = [
     bonusTracks: ["Misperception"],
     impression: "Якщо хтось не чув його творчість, то знайте: нічого не втратили.",
     verdict: "💤 Нічого не втратили",
-    image: "https://i.ytimg.com/vi/kYJ7L2JpWbA/hqdefault.jpg",
+    image: "",
     highlight: false
   },
   {
@@ -576,7 +576,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "«Що ти хочеш» качає. Нічого в цьому особливого.",
     verdict: "😐 Нічого особливого",
-    image: "https://i.ytimg.com/vi/KLenTVwQ1A0/hqdefault.jpg",
+    image: "",
     highlight: false
   },
   {
@@ -587,7 +587,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Це пиздець.. Краще вже МС Петя, в ньому хоч прикол якийсь є🗿",
     verdict: "🗿 Краще вже МС Петя",
-    image: "https://i.ytimg.com/vi/R9Z8X_k0ZcQ/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/38/de/37/38de3755-30df-4c80-bc65-60ecc0428c27/cover.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -598,7 +598,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "«Narkotiki» — жиза, в іншому — хуєта.",
     verdict: "🧐 «Narkotiki» жиза",
-    image: "https://i.ytimg.com/vi/kYJj6S0gQcE/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/78449b53cc9f658a80daf4344a33561d/1000x1000-000000-80-0-0.jpg",
     highlight: false
   },
   {
@@ -609,7 +609,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "Черговий нищук, що читає про сучок, яких він трахає, і що ніхто не шарить за його стиль.",
     verdict: "💤 Черговий нищук",
-    image: "https://i.ytimg.com/vi/kYJ-wG7Q5iA/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9b/8f/8f/9b8f8fb2-e8b1-217e-6270-95ba8b6d8216/7300343154228.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -620,7 +620,7 @@ const ARTISTS = [
     bonusTracks: ["Brat"],
     impression: "Говно, залупа, пеніс, хер, давалка, хуй, блядина…",
     verdict: "💩 Говно, залупа...",
-    image: "https://i.ytimg.com/vi/kYJjT-m-u2Q/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/47/db/81/47db8138-93ba-18cd-d77d-ef1b6342e160/cover.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -631,7 +631,7 @@ const ARTISTS = [
     bonusTracks: ["Фільм"],
     impression: "Взагалі нічим не відрізняється від конкурентів. Включи мені будь-якого — не відрізню. Посередність.",
     verdict: "😐 Посередність",
-    image: "",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/52/06/0d/52060d20-2928-1b4c-00aa-8c0056eaa36f/cover.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -653,7 +653,7 @@ const ARTISTS = [
     bonusTracks: ["Джига Флоу"],
     impression: "Бля, забавний тіп. Мені сподобалось 😂\nТіп хоча б не пиздить у текстах😂\nТіп каже: «Побачив член, я знизив його»😂\n«Я не можу дропнуть альбом, їбучий укртелеком»😂😂\n«Житомир не існує» — ржачна пісня.",
     verdict: "😂 Ржака / Лайк за щирість",
-    image: "https://i.ytimg.com/vi/i4n-YvU0N9M/hqdefault.jpg",
+    image: "https://cdn-images.dzcdn.net/images/artist/f06066fc492b80dfb5caf977266f1b0b/1000x1000-000000-80-0-0.jpg",
     highlight: true
   },
   {
@@ -664,7 +664,7 @@ const ARTISTS = [
     bonusTracks: [],
     impression: "💩💩💩💩💩",
     verdict: "💩 5 купок лайна",
-    image: "https://i.ytimg.com/vi/xG1Qj0uR41M/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/5f/70/2e/5f702e70-d8a9-8482-4a76-1c6ae0d0699d/0.jpg/600x600bb.jpg",
     highlight: false
   },
   {
@@ -675,7 +675,7 @@ const ARTISTS = [
     bonusTracks: ["Відстань", "Вода", "Про тебе"],
     impression: "Це дуже навіть непогано. Як на мене, тексти слабуваті, але стиль у тіпа є. Я навіть кайфанув після нескінченного одноманітного клауд-репу🗿\nУдачі в творчості, він заслуговує на більшу увагу.",
     verdict: "👍 Кайфанув / Є стиль",
-    image: "https://i.ytimg.com/vi/eL1u_mJ-84U/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/01/6c/65/016c65db-1693-d568-286c-d4d11c56a891/198391943942.jpg/600x600bb.jpg",
     highlight: true
   },
   {
@@ -686,7 +686,7 @@ const ARTISTS = [
     bonusTracks: ["Swag Airlines"],
     impression: "Один з найкращих треп/клауд, що я слухав серед дуже маловідомих артистів. Воно хоч трішки відрізняється від інших.",
     verdict: "🔥 Найкращий у мікро-андеграунді",
-    image: "https://i.ytimg.com/vi/64l2M4z9u8Y/hqdefault.jpg",
+    image: "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/5b/9b/72/5b9b726f-4fea-e0e4-0c1b-89b3c77e767a/cover.jpg/600x600bb.jpg",
     highlight: true
   }
 ];

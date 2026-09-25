@@ -9,8 +9,10 @@
 // The current image is checked too: iTunes covers must belong to a matched iTunes release,
 // YouTube thumbnails must point to an existing video whose title/channel names the artist.
 //
-// Does NOT modify data.js. Writes artworks_report.json:
+// Does NOT modify data.js by default. Writes artworks_report.json:
 //   node fetch_artworks_v3.js
+// After reviewing the report, apply it:
+//   node fetch_artworks_v3.js --apply
 
 const fs = require('fs');
 const vm = require('vm');
@@ -149,6 +151,40 @@ async function checkYouTube(url, artist) {
   };
 }
 
+// A weak (name-only) candidate may fill a broken/missing image,
+// but must not override an existing image that simply couldn't be verified
+function decideAction(entry) {
+  const { currentStatus, proposed } = entry;
+  if (currentStatus === 'verified') return 'keep';
+  if (proposed && (proposed.confidence === 'strong' || currentStatus !== 'mismatch')) return 'replace';
+  if (currentStatus === 'broken') return 'remove';
+  return 'keep';
+}
+
+// node fetch_artworks_v3.js --apply  -> writes artworks_report.json decisions into data.js
+function applyReport() {
+  const report = JSON.parse(fs.readFileSync('artworks_report.json', 'utf8'));
+  let code = fs.readFileSync('data.js', 'utf8');
+  let changed = 0;
+
+  for (const entry of report) {
+    if (entry.action !== 'replace' && entry.action !== 'remove') continue;
+    const newImage = entry.action === 'replace' ? entry.proposed.image : '';
+    const idPos = code.indexOf(`id: "${entry.id}"`);
+    if (idPos === -1) continue;
+    const imageRe = /image: "[^"]*"/g;
+    imageRe.lastIndex = idPos;
+    const m = imageRe.exec(code);
+    const nextId = code.indexOf('id: "', idPos + 1);
+    if (!m || (nextId !== -1 && m.index > nextId)) continue;
+    code = code.slice(0, m.index) + `image: ${JSON.stringify(newImage)}` + code.slice(m.index + m[0].length);
+    changed++;
+  }
+
+  fs.writeFileSync('data.js', code);
+  console.log(`Updated ${changed} images in data.js`);
+}
+
 async function main() {
   const report = [];
 
@@ -183,10 +219,7 @@ async function main() {
       entry.error = e.message;
     }
 
-    entry.action = entry.currentStatus === 'verified' ? 'keep'
-      : entry.proposed ? 'replace'
-      : entry.currentStatus === 'broken' || entry.currentStatus === 'mismatch' ? 'remove'
-      : 'keep';
+    entry.action = decideAction(entry);
 
     report.push(entry);
     console.log(`[${i + 1}/${ARTISTS.length}] ${artist.name}: current=${entry.currentStatus}` +
@@ -200,4 +233,8 @@ async function main() {
   console.log('Saved to artworks_report.json');
 }
 
-main();
+if (process.argv.includes('--apply')) {
+  applyReport();
+} else {
+  main();
+}
