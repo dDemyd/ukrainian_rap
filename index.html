@@ -214,22 +214,22 @@ Clonnex:
   <!-- Detail Modal Dialog -->
   <dialog id="artist-dialog" class="artist-modal">
     <div class="modal-hero">
+      <button id="modal-close-btn" class="close-btn modal-close-btn" aria-label="Закрити">&times;</button>
       <div class="modal-hero-cover">
         <img id="modal-cover-img" class="modal-cover-img" src="" alt="Обкладинка" style="display: none;">
         <div id="modal-cover-fallback" class="card-avatar-fallback">
           <span id="modal-cover-initials" class="fallback-initials">UA</span>
         </div>
       </div>
-      <div style="flex: 1; min-width: 0;">
-        <div class="modal-title-row" style="margin-bottom: 8px;">
+      <div class="modal-hero-details">
+        <div class="modal-badges-row">
           <span id="modal-artist-tier-badge" class="card-tier-badge"></span>
-          <span id="modal-verdict-badge" class="verdict-tag" style="margin-left: 6px;"></span>
+          <span id="modal-verdict-badge" class="verdict-tag"></span>
         </div>
-        <h2 id="modal-artist-name" class="modal-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></h2>
-      </div>
-      <div style="display: flex; gap: 8px; align-items: flex-start; margin-left: auto;">
-        <button id="modal-edit-btn" class="btn btn-sm" title="Редагувати треки та враження">✏️ Редагувати</button>
-        <button id="modal-close-btn" class="close-btn" aria-label="Закрити">&times;</button>
+        <h2 id="modal-artist-name" class="modal-title"></h2>
+        <div class="modal-actions-row">
+          <button id="modal-edit-btn" class="btn btn-sm btn-edit-badge" title="Редагувати треки та враження">✏️ Редагувати</button>
+        </div>
       </div>
     </div>
 

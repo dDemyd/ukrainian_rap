@@ -23,17 +23,19 @@
 
   class IcebergApp {
     constructor() {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
       this.artists = this.loadArtists();
       this.currentTierFilter = 'all';
       this.searchQuery = '';
-      this.currentView = 'iceberg'; // 'iceberg' | 'grid'
+      this.currentView = isMobile ? 'grid' : 'iceberg'; // Default 'grid' (cards) on mobile!
       this.currentModalArtistIndex = -1;
       this.filteredArtists = [...this.artists];
       this.isEditingModal = false;
 
       this.initElements();
       this.bindEvents();
-      this.render();
+      this.switchView(this.currentView);
+      this.updateStats();
     }
 
     // Safe localStorage loading
@@ -151,7 +153,19 @@
         btn.classList.add('active');
         this.currentTierFilter = btn.dataset.tier;
         this.applyFilters();
+
+        // Smooth scroll active pill into view
+        const pillOffset = btn.offsetLeft - (this.filterTierGroup.clientWidth / 2) + (btn.clientWidth / 2);
+        this.filterTierGroup.scrollTo({ left: pillOffset, behavior: 'smooth' });
       });
+
+      // Enable horizontal scroll on mouse wheel for desktop/mobile testing
+      this.filterTierGroup.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0 && !e.deltaX) {
+          this.filterTierGroup.scrollLeft += e.deltaY;
+          e.preventDefault();
+        }
+      }, { passive: false });
 
       // View Switcher
       this.viewIcebergBtn.addEventListener('click', () => this.switchView('iceberg'));
@@ -527,7 +541,7 @@
       if (this.modalVerdictBadge) {
         if (artist.verdict) {
           this.modalVerdictBadge.textContent = artist.verdict;
-          this.modalVerdictBadge.style.display = 'inline-block';
+          this.modalVerdictBadge.style.display = 'inline-flex';
         } else {
           this.modalVerdictBadge.style.display = 'none';
         }
